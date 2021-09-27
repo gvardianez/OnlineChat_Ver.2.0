@@ -21,7 +21,7 @@ public class DataBaseHistoryService implements HistoryService {
     public void start() {
         try {
             Statement statement = connection.createStatement();
-            statement.execute("create table if not exists message_history Create table if not exists message_history (idmessage_history int auto_increment primary key unique, user_id int not null, message mediumtext not null, foreign key (user_id) references users(idUsers));");
+            statement.execute("create table if not exists message_history (idmessage_history int auto_increment primary key unique, user_id int not null, message mediumtext not null, foreign key (user_id) references users(idUsers));");
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -42,9 +42,9 @@ public class DataBaseHistoryService implements HistoryService {
     }
 
     @Override
-    public void saveMessage(String nickUser, String message) {
+    public void saveMessage(String nickUser, String message, String date) {
         int idUser;
-        String messageForSave = prepareMessage(message);
+        String messageForSave = "[" + date + "]" + prepareMessage(message);
         try {
             preparedStatement = connection.prepareStatement("select idUsers from users where nickname = ?;");
             preparedStatement.setString(1, nickUser);

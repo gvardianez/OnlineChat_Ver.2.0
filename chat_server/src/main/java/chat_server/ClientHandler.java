@@ -6,6 +6,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 
 public class ClientHandler {
@@ -15,6 +18,7 @@ public class ClientHandler {
     private ChatServer server;
     private String currentNickUser;
     private final char symbol = 10000;
+    private DateFormat dateFormat;
 
     public ClientHandler(Socket socket, ChatServer server) {
         try {
@@ -22,6 +26,7 @@ public class ClientHandler {
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
             this.server = server;
+            this.dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,8 +81,10 @@ public class ClientHandler {
     }
 
     private void processMessage(String currentNickUser, String parseMessageArray) {
-        server.getHistoryService().saveMessage(currentNickUser, parseMessageArray);
-        server.broadcastMessage(currentNickUser, parseMessageArray);
+        Calendar calendar = Calendar.getInstance();
+        String date = dateFormat.format(calendar.getTime());
+        server.getHistoryService().saveMessage(currentNickUser, parseMessageArray, date);
+        server.broadcastMessage(currentNickUser, parseMessageArray, date);
     }
 
     private void authorize() {

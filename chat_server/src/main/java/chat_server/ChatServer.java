@@ -4,14 +4,18 @@ import chat_server.services.autorization.AuthorizationService;
 import chat_server.services.autorization.DataBaseAuthService;
 import chat_server.services.history.DataBaseHistoryService;
 import chat_server.services.history.HistoryService;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class ChatServer {
@@ -32,7 +36,7 @@ public class ChatServer {
             e.printStackTrace();
         }
         this.authService = new DataBaseAuthService(dataBaseConnection);
-        this.historyService = new DataBaseHistoryService(dataBaseConnection, 1000,10);
+        this.historyService = new DataBaseHistoryService(dataBaseConnection, 1000, 10);
         this.handlers = new ArrayList<>();
     }
 
@@ -58,20 +62,20 @@ public class ChatServer {
         }
     }
 
-    public void broadcastMessage(String senderNick, String message) {
+    public void broadcastMessage(String senderNick, String message, String date) {
         char splitterOne = 1000;
         char splitterTwo = 5000;
         String[] parsingMessage = message.split("" + splitterTwo);
         List<String> nicksRecipients = new ArrayList<>(Arrays.asList(parsingMessage[0].split("" + splitterOne)));
         if (nicksRecipients.size() == 1) {
             for (ClientHandler handler : handlers) {
-                handler.sendMessage(senderNick + ": " + parsingMessage[1]);
+                handler.sendMessage("[" + date + "]" + " " + senderNick + ": " + parsingMessage[1]);
             }
             return;
         }
         for (ClientHandler handler : handlers) {
             if (nicksRecipients.contains(handler.getCurrentNickUser())) {
-                handler.sendMessage(senderNick + ": " + parsingMessage[1]);
+                handler.sendMessage("[" + date + "]" + " " + senderNick + ": " + parsingMessage[1]);
             }
         }
     }
