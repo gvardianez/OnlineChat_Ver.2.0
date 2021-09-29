@@ -37,7 +37,7 @@ public class ChatController implements Initializable, MessageProcessor {
         switch (parseMessage) {
             case "authok:": {
                 this.nickName = parseMessageArray[1];
-                historyService = new FileHistoryService(nickName, "chat_client/src/history", 10, 5);
+                historyService = new FileHistoryService(nickName, "chat_client/src/history", 10);
                 loginPanel.setVisible(false);
                 mainChatPanel.setVisible(true);
                 mainChatArea.appendText(historyService.loadHistory(5) + System.lineSeparator());
@@ -111,7 +111,7 @@ public class ChatController implements Initializable, MessageProcessor {
             }
             chatMessageService.send(resultMessage + splitterTwo + message);
             String[] array = (resultMessage + splitterTwo + message).split("" + symbol);
-            historyService.saveMessage(array[1]);
+            historyService.saveMessageAsLine(array[1]);
         inputField.clear();
     }
 

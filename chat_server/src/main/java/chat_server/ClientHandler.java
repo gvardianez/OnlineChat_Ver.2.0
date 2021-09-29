@@ -2,9 +2,7 @@ package chat_server;
 
 import chat_server.errors.*;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,8 +11,8 @@ import java.util.concurrent.ExecutorService;
 
 public class ClientHandler {
     private Socket socket;
-    private DataOutputStream out;
-    private DataInputStream in;
+    private BufferedWriter out;
+    private BufferedReader in;
     private ChatServer server;
     private String currentNickUser;
     private final char symbol = 10000;
@@ -23,8 +21,8 @@ public class ClientHandler {
     public ClientHandler(Socket socket, ChatServer server) {
         try {
             this.socket = socket;
-            this.in = new DataInputStream(socket.getInputStream());
-            this.out = new DataOutputStream(socket.getOutputStream());
+            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.server = server;
             this.dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         } catch (IOException e) {
@@ -39,7 +37,7 @@ public class ClientHandler {
             try {
                 while (!Thread.currentThread().isInterrupted() && socket.isConnected()) {
                     socket.setSoTimeout(1000 * 60 * 30);
-                    String message = in.readUTF();
+                    String message = in.readLine();
                     String[] parseMessageArray = message.split("" + symbol);
                     System.out.println(parseMessageArray[0]);
                     switch (parseMessageArray[0]) {
@@ -90,7 +88,7 @@ public class ClientHandler {
     private void authorize() {
         while (!Thread.currentThread().isInterrupted() && socket.isConnected()) {
             try {
-                String message = in.readUTF();
+                String message = in.readLine();
                 String[] parseMessageArray = message.split("" + symbol);
                 String parseMessage = parseMessageArray[0];
                 if (parseMessage.equals("auth:")) {
@@ -187,7 +185,8 @@ public class ClientHandler {
 
     public void sendMessage(String message) {
         try {
-            out.writeUTF(message);
+            out.write(message+System.lineSeparator());
+            out.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
