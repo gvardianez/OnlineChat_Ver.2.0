@@ -69,7 +69,10 @@ public class ClientHandler {
                         }
                     }
                 }
-            } catch (IOException e) {
+            }catch (SocketTimeoutException e){
+                closeConnection("Server Time Out");
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             } finally {
                 System.out.println("finally");
