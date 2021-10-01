@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="chat_client.ChatController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <VBox visible="true" fx:id="loginPanel">
+        <HBox VBox.vgrow="ALWAYS">
+            <TextField text="login..." fx:id="loginField" onAction="#sendAuth"/>
+            <PasswordField text="..." fx:id="passwordField" onAction="#sendAuth"/>
+        </HBox>
+        <Button text="Enter" onAction="#sendAuth"/>
+        <Button text="Registration" onAction="#registration"/>
+    </VBox>
+
+    <VBox visible="false" fx:id="changeNicknamePanel">
+        <HBox VBox.vgrow="ALWAYS">
+            <PasswordField text="..." fx:id="enterPassword" onAction="#changeNicknameAuth"/>
+            <TextField text="new nickname..." fx:id="changeNickname" onAction="#changeNicknameAuth"/>
+        </HBox>
+        <Button text="Change Nickname" onAction="#changeNicknameAuth"/>
+        <Button text="Back" onAction="#goBackOnMainChatPanel"/>
+    </VBox>
+
+    <VBox visible="false" fx:id="changePasswordPanel">
+        <HBox VBox.vgrow="ALWAYS">
+            <PasswordField text="..." fx:id="enterOldPassword" onAction="#changePasswordAuth"/>
+            <PasswordField text="..." fx:id="enterNewPassword" onAction="#changePasswordAuth"/>
+        </HBox>
+        <Button text="Change Password" onAction="#changePasswordAuth"/>
+        <Button text="Back" onAction="#goBackOnMainChatPanel"/>
+    </VBox>
+
+    <VBox visible="false" fx:id="registrationPanel">
+        <HBox VBox.vgrow="ALWAYS">
+            <TextField text="login..." fx:id="loginFieldReg" onAction="#registrationAuth"/>
+            <PasswordField text="..." fx:id="passwordFieldReg" onAction="#registrationAuth"/>
+            <TextField text="nick..." fx:id="nickFieldReg" onAction="#registrationAuth"/>
+        </HBox>
+        <Button text="Registration" onAction="#registrationAuth"/>
+        <Button text="Back" onAction="#goBackOnLoginPanel"/>
+    </VBox>
+
+    <VBox visible="false" fx:id="deletePanel">
+        <HBox VBox.vgrow="ALWAYS">
+            <PasswordField text="..." fx:id="passwordFieldForDelete" onAction="#deleteAccountAuth"/>
+        </HBox>
+        <Button text="DELETE" onAction="#deleteAccountAuth"/>
+        <Button text="Back" onAction="#goBackOnMainChatPanel"/>
+    </VBox>
+
+    <VBox fx:id="mainChatPanel" visible="false">
+        <MenuBar>
+            <Menu text="Menu">
+                <MenuItem text="Change Password" onAction="#changePassword"/>
+                <MenuItem text="Change Nick" onAction="#changeNickname"/>
+                <MenuItem text="Delete Account" onAction="#deleteAccount"/>
+                <MenuItem text="View All Message History" onAction="#viewAllMessageHistory"/>
+                <MenuItem text="Clear Message History" onAction="#clearMessageHistory"/>
+                <MenuItem text="Exit" onAction="#exit"/>
+            </Menu>
+        </MenuBar>
+        <HBox VBox.vgrow="ALWAYS">
+            <TextArea fx:id="mainChatArea" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" editable="false">
+                <HBox.margin>
+                    <Insets left="4.0" right="4.0"/>
+                </HBox.margin>
+            </TextArea>
+
+            <ListView fx:id="contactList" prefWidth="130.0">
+                <HBox.margin>
+                    <Insets left="4.0" right="4.0"/>
+                </HBox.margin>
+            </ListView>
+            <padding>
+                <Insets bottom="4.0" top="4.0"/>
+            </padding>
+        </HBox>
+
+        <HBox>
+            <TextField fx:id="inputField" HBox.hgrow="ALWAYS" prefHeight="60.0" onAction="#sendMessage">
+                <HBox.margin>
+                    <Insets left="4.0" right="4.0"/>
+                </HBox.margin>
+            </TextField>
+
+            <Button fx:id="btnSendMessage" text="SEND" prefHeight="60.0" prefWidth="130.0" onAction="#sendMessage">
+                <HBox.margin>
+                    <Insets left="4.0" right="4.0"/>
+                </HBox.margin>
+            </Button>
+            <padding>
+                <Insets bottom="4.0" top="4.0"/>
+            </padding>
+        </HBox>
+    </VBox>
+</AnchorPane>

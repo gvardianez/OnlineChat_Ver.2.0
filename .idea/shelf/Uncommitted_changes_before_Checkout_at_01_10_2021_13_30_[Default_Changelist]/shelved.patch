@@ -1,0 +1,444 @@
+Index: chat_client/src/main/java/chat_client/App.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chat_client;\r\n\r\nimport javafx.application.Application;\r\nimport javafx.event.EventHandler;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.scene.Parent;\r\nimport javafx.scene.Scene;\r\nimport javafx.stage.Stage;\r\nimport javafx.stage.WindowEvent;\r\n\r\n\r\npublic class App extends Application {\r\n\r\n    public static void main(String[] args) {\r\n        launch(args);\r\n    }\r\n\r\n    @Override\r\n    public void start(Stage primaryStage) throws Exception {\r\n        FXMLLoader loader = new FXMLLoader();\r\n        loader.setLocation(this.getClass().getResource(\"/chat_main.fxml\"));\r\n        Parent parent = loader.load();\r\n        Scene scene = new Scene(parent);\r\n        primaryStage.setScene(scene);\r\n        primaryStage.setTitle(\"Online Chat\");\r\n        primaryStage.show();\r\n        primaryStage.setOnCloseRequest(windowEvent -> System.exit(0));\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/chat_client/src/main/java/chat_client/App.java b/chat_client/src/main/java/chat_client/App.java
+--- a/chat_client/src/main/java/chat_client/App.java	(revision bb181a90592274c21a378ba57477296116320b04)
++++ b/chat_client/src/main/java/chat_client/App.java	(date 1633080659415)
+@@ -24,7 +24,9 @@
+         primaryStage.setScene(scene);
+         primaryStage.setTitle("Online Chat");
+         primaryStage.show();
+-        primaryStage.setOnCloseRequest(windowEvent -> System.exit(0));
++        primaryStage.setOnCloseRequest(windowEvent -> {
++
++            System.exit(0);});
+     }
+ 
+ }
+Index: chat_server/src/main/java/chat_server/ClientHandler.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chat_server;\r\n\r\nimport chat_server.errors.*;\r\n\r\nimport java.io.*;\r\nimport java.net.Socket;\r\nimport java.text.DateFormat;\r\nimport java.text.SimpleDateFormat;\r\nimport java.util.Calendar;\r\nimport java.util.concurrent.ExecutorService;\r\n\r\npublic class ClientHandler {\r\n    private Socket socket;\r\n    private BufferedWriter out;\r\n    private BufferedReader in;\r\n    private ChatServer server;\r\n    private String currentNickUser;\r\n    private final char symbol = 10000;\r\n    private DateFormat dateFormat;\r\n\r\n    public ClientHandler(Socket socket, ChatServer server) {\r\n        try {\r\n            this.socket = socket;\r\n            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));\r\n            this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));\r\n            this.server = server;\r\n            this.dateFormat = new SimpleDateFormat(\"dd/MM/yy HH:mm:ss\");\r\n        } catch (IOException e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    public void launch() {\r\n        Thread handlerThread = new Thread(() -> {\r\n            authorize();\r\n            System.out.println(\"launch\");\r\n            try {\r\n                while (!Thread.currentThread().isInterrupted() && socket.isConnected()) {\r\n                    socket.setSoTimeout(1000 * 60 * 30);\r\n                    String message = in.readLine();\r\n                    String[] parseMessageArray = message.split(\"\" + symbol);\r\n                    System.out.println(parseMessageArray[0]);\r\n                    switch (parseMessageArray[0]) {\r\n                        case (\"changePass:\"): {\r\n                            changePassword(parseMessageArray);\r\n                            break;\r\n                        }\r\n                        case (\"changeNick:\"): {\r\n                            changeNick(parseMessageArray);\r\n                            break;\r\n                        }\r\n                        case (\"del:\"): {\r\n                            deleteAccount(parseMessageArray[1]);\r\n                            break;\r\n                        }\r\n                        case (\"sendMessage:\"): {\r\n                            processMessage(currentNickUser, parseMessageArray[1]);\r\n                            break;\r\n                        }\r\n                        case (\"viewAllHistory:\"): {\r\n                            sendMessage(server.getHistoryService().loadMessageHistory(currentNickUser, server.getHistoryService().getValueOfSaveRaw()));\r\n                        }\r\n                        case (\"clearAllHistory:\"): {\r\n                            if (server.getHistoryService().clearMessageHistory(currentNickUser))\r\n                                sendMessage(\"Message History Clear\");\r\n                            break;\r\n                        }\r\n                    }\r\n                }\r\n            } catch (IOException e) {\r\n                e.printStackTrace();\r\n            } finally {\r\n                closeConnection(\"Close\");\r\n                System.out.println(\"finally\");\r\n                server.removeAuthorizedClientFromList(this);\r\n            }\r\n        });\r\n        handlerThread.start();\r\n    }\r\n\r\n    private void processMessage(String currentNickUser, String parseMessageArray) {\r\n        Calendar calendar = Calendar.getInstance();\r\n        String date = dateFormat.format(calendar.getTime());\r\n        server.getHistoryService().saveMessage(currentNickUser, parseMessageArray, date);\r\n        server.broadcastMessage(currentNickUser, parseMessageArray, date);\r\n    }\r\n\r\n    private void authorize() {\r\n        while (!Thread.currentThread().isInterrupted() && socket.isConnected()) {\r\n            try {\r\n                String message = in.readLine();\r\n                String[] parseMessageArray = message.split(\"\" + symbol);\r\n                String parseMessage = parseMessageArray[0];\r\n                if (parseMessage.equals(\"auth:\")) {\r\n                    try {\r\n                        this.currentNickUser = server.getAuthService().getNicknameByLoginAndPassword(parseMessageArray[1], parseMessageArray[2]);\r\n                        checkAlreadyAuthorize();\r\n                        this.server.addAuthorizedClientToList(this);\r\n                        sendMessage(\"authok:\" + symbol + this.currentNickUser);\r\n                        sendMessage(server.getHistoryService().loadMessageHistory(currentNickUser, server.getHistoryService().getValueOfLoadRaw()));\r\n                        return;\r\n                    } catch (AlreadyAuthorizeException e) {\r\n                        sendMessage(\"ERROR:\" + symbol + \"You are already is authorized\");\r\n                        continue;\r\n                    } catch (WrongCredentialsException e) {\r\n                        sendMessage(\"ERROR:\" + symbol + \" Wrong credentials\");\r\n                        continue;\r\n                    } catch (UserNotFoundException e) {\r\n                        sendMessage(\"ERROR:\" + symbol + \" User not found!\");\r\n                        continue;\r\n                    }\r\n                }\r\n                if (parseMessage.equals(\"reg:\")) {\r\n                    try {\r\n                        server.getAuthService().createNewUser(parseMessageArray[1], parseMessageArray[2], parseMessageArray[3]);\r\n                        sendMessage(\"regok:\" + symbol);\r\n                    } catch (LoginIsNotAvailableException e) {\r\n                        sendMessage(\"ERROR:\" + symbol + \"Login is not available\");\r\n                    } catch (NicknameIsNotAvailableException e) {\r\n                        sendMessage(\"ERROR:\" + symbol + \"Nickname is not available\");\r\n                    }\r\n                }\r\n            } catch (IOException e) {\r\n                closeConnection(\"Server Time Out\");\r\n                e.printStackTrace();\r\n                break;\r\n            }\r\n        }\r\n    }\r\n\r\n    private void checkAlreadyAuthorize() {\r\n        for (ClientHandler clientHandler : this.server.getHandlers()) {\r\n            if (clientHandler.getCurrentNickUser().equals(this.currentNickUser)) {\r\n                throw new AlreadyAuthorizeException(\"\");\r\n            }\r\n        }\r\n    }\r\n\r\n    private void closeConnection(String message) {\r\n        sendMessage(\"Connection broke\" + symbol + message);\r\n        Thread.currentThread().interrupt();\r\n        try {\r\n            socket.close();\r\n        } catch (IOException ioException) {\r\n            ioException.printStackTrace();\r\n        }\r\n    }\r\n\r\n    private void changeNick(String[] messageArray) {\r\n        try {\r\n            server.getAuthService().changeNickname(currentNickUser, messageArray[1], messageArray[2]);\r\n            System.out.println(\"changed nickname\");\r\n            currentNickUser = messageArray[2];\r\n            server.sendClientsOnline();\r\n            sendMessage(\"changeNickOk:\" + symbol);\r\n        } catch (NicknameIsNotAvailableException e) {\r\n            sendMessage(\"ERROR:\" + symbol + \"Nickname is not available\");\r\n        } catch (WrongCredentialsException e) {\r\n            sendMessage(\"ERROR:\" + symbol + \"Wrong credentials\");\r\n        }\r\n    }\r\n\r\n    private void changePassword(String[] messageArray) {\r\n        try {\r\n            server.getAuthService().changePassword(currentNickUser, messageArray[1], messageArray[2]);\r\n            System.out.println(\"changed password\");\r\n            sendMessage(\"changePasswordOk:\" + symbol);\r\n        } catch (WrongCredentialsException e) {\r\n            sendMessage(\"ERROR:\" + symbol + \"Wrong credentials\");\r\n        } catch (UserNotFoundException e) {\r\n            sendMessage(\"ERROR:\" + symbol + \"User not found!\");\r\n        }\r\n    }\r\n\r\n    private void deleteAccount(String password) {\r\n        try {\r\n            server.getAuthService().deleteUser(currentNickUser, password);\r\n            System.out.println(\"delete user ok\");\r\n            sendMessage(\"deleteAccountOk:\" + symbol);\r\n            closeConnection(\"Account Delete Successfully\");\r\n        } catch (WrongCredentialsException e) {\r\n            sendMessage(\"ERROR:\" + symbol + \"Wrong credentials\");\r\n        }\r\n    }\r\n\r\n    public void sendMessage(String message) {\r\n        try {\r\n            out.write(message+System.lineSeparator());\r\n            out.flush();\r\n        } catch (IOException e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    public String getCurrentNickUser() {\r\n        return currentNickUser;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/chat_server/src/main/java/chat_server/ClientHandler.java b/chat_server/src/main/java/chat_server/ClientHandler.java
+--- a/chat_server/src/main/java/chat_server/ClientHandler.java	(revision bb181a90592274c21a378ba57477296116320b04)
++++ b/chat_server/src/main/java/chat_server/ClientHandler.java	(date 1633082408842)
+@@ -4,6 +4,8 @@
+ 
+ import java.io.*;
+ import java.net.Socket;
++import java.net.SocketTimeoutException;
++import java.sql.SQLException;
+ import java.text.DateFormat;
+ import java.text.SimpleDateFormat;
+ import java.util.Calendar;
+@@ -35,7 +37,7 @@
+             authorize();
+             System.out.println("launch");
+             try {
+-                while (!Thread.currentThread().isInterrupted() && socket.isConnected()) {
++                while (!Thread.currentThread().isInterrupted() && !socket.isClosed()) {
+                     socket.setSoTimeout(1000 * 60 * 30);
+                     String message = in.readLine();
+                     String[] parseMessageArray = message.split("" + symbol);
+@@ -59,6 +61,7 @@
+                         }
+                         case ("viewAllHistory:"): {
+                             sendMessage(server.getHistoryService().loadMessageHistory(currentNickUser, server.getHistoryService().getValueOfSaveRaw()));
++                            break;
+                         }
+                         case ("clearAllHistory:"): {
+                             if (server.getHistoryService().clearMessageHistory(currentNickUser))
+@@ -67,11 +70,19 @@
+                         }
+                     }
+                 }
++            } catch (SocketTimeoutException e) {
++                closeConnection("Server Time Out");
+             } catch (IOException e) {
+                 e.printStackTrace();
+             } finally {
+-                closeConnection("Close");
+                 System.out.println("finally");
++//                if (!socket.isClosed()) {
++//                    try {
++//                        socket.close();
++//                    } catch (IOException e) {
++//                        e.printStackTrace();
++//                    }
++//                }
+                 server.removeAuthorizedClientFromList(this);
+             }
+         });
+@@ -86,7 +97,7 @@
+     }
+ 
+     private void authorize() {
+-        while (!Thread.currentThread().isInterrupted() && socket.isConnected()) {
++        while (!Thread.currentThread().isInterrupted() && !socket.isClosed()) {
+             try {
+                 String message = in.readLine();
+                 String[] parseMessageArray = message.split("" + symbol);
+@@ -103,11 +114,14 @@
+                         sendMessage("ERROR:" + symbol + "You are already is authorized");
+                         continue;
+                     } catch (WrongCredentialsException e) {
+-                        sendMessage("ERROR:" + symbol + " Wrong credentials");
++                        sendMessage("ERROR:" + symbol + "Wrong credentials");
+                         continue;
+                     } catch (UserNotFoundException e) {
+-                        sendMessage("ERROR:" + symbol + " User not found!");
++                        sendMessage("ERROR:" + symbol + "User not found!");
+                         continue;
++                    } catch (SQLException e) {
++                        sendMessage("ERROR:" + symbol + "Data Base Problem, try later");
++                        continue;
+                     }
+                 }
+                 if (parseMessage.equals("reg:")) {
+@@ -120,8 +134,10 @@
+                         sendMessage("ERROR:" + symbol + "Nickname is not available");
+                     }
+                 }
++            } catch (SocketTimeoutException e) {
++                closeConnection("Server Time Out");
++                break;
+             } catch (IOException e) {
+-                closeConnection("Server Time Out");
+                 e.printStackTrace();
+                 break;
+             }
+@@ -185,7 +201,7 @@
+ 
+     public void sendMessage(String message) {
+         try {
+-            out.write(message+System.lineSeparator());
++            out.write(message + System.lineSeparator());
+             out.flush();
+         } catch (IOException e) {
+             e.printStackTrace();
+Index: chat_server/src/main/java/chat_server/ChatServer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chat_server;\r\n\r\nimport chat_server.services.autorization.AuthorizationService;\r\nimport chat_server.services.autorization.DataBaseAuthService;\r\nimport chat_server.services.history.DataBaseHistoryService;\r\nimport chat_server.services.history.HistoryService;\r\n\r\nimport java.io.IOException;\r\nimport java.net.ServerSocket;\r\nimport java.net.Socket;\r\nimport java.sql.Connection;\r\nimport java.sql.DriverManager;\r\nimport java.sql.SQLException;\r\nimport java.text.DateFormat;\r\nimport java.text.SimpleDateFormat;\r\nimport java.util.ArrayList;\r\nimport java.util.Arrays;\r\nimport java.util.Calendar;\r\nimport java.util.List;\r\n\r\npublic class ChatServer {\r\n\r\n    private static final int PORT = 6000;\r\n    private final AuthorizationService authService;\r\n    private final HistoryService historyService;\r\n    private final List<ClientHandler> handlers;\r\n    private Connection dataBaseConnection;\r\n    private final String name = \"Alex\";\r\n    private final String pass = \"1111\";\r\n    private final String connectionURL = \"jdbc:mysql://localhost:3306/online_chat\";\r\n\r\n    public ChatServer() {\r\n        try {\r\n            dataBaseConnection = DriverManager.getConnection(connectionURL, name, pass);\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n        this.authService = new DataBaseAuthService(dataBaseConnection);\r\n        this.historyService = new DataBaseHistoryService(dataBaseConnection, 1000, 10);\r\n        this.handlers = new ArrayList<>();\r\n    }\r\n\r\n    public List<ClientHandler> getHandlers() {\r\n        return handlers;\r\n    }\r\n\r\n    public void start() {\r\n        try (ServerSocket serverSocket = new ServerSocket(PORT)) {\r\n            System.out.println(\"Server start\");\r\n            while (true) {\r\n                System.out.println(\"Waiting for connection\");\r\n                Socket socket = serverSocket.accept();\r\n                socket.setSoTimeout(240000);\r\n                System.out.println(\"Client connected\");\r\n                new ClientHandler(socket, this).launch();\r\n            }\r\n        } catch (IOException e) {\r\n            e.printStackTrace();\r\n        } finally {\r\n            authService.stop();\r\n            historyService.stop();\r\n        }\r\n    }\r\n\r\n    public void broadcastMessage(String senderNick, String message, String date) {\r\n        char splitterOne = 1000;\r\n        char splitterTwo = 5000;\r\n        String[] parsingMessage = message.split(\"\" + splitterTwo);\r\n        List<String> nicksRecipients = new ArrayList<>(Arrays.asList(parsingMessage[0].split(\"\" + splitterOne)));\r\n        if (nicksRecipients.size() == 1) {\r\n            for (ClientHandler handler : handlers) {\r\n                handler.sendMessage(\"[\" + date + \"]\" + \" \" + senderNick + \": \" + parsingMessage[1]);\r\n            }\r\n            return;\r\n        }\r\n        for (ClientHandler handler : handlers) {\r\n            if (nicksRecipients.contains(handler.getCurrentNickUser())) {\r\n                handler.sendMessage(\"[\" + date + \"]\" + \" \" + senderNick + \": \" + parsingMessage[1]);\r\n            }\r\n        }\r\n    }\r\n\r\n    public synchronized void removeAuthorizedClientFromList(ClientHandler handler) {\r\n        this.handlers.remove(handler);\r\n        sendClientsOnline();\r\n    }\r\n\r\n    public synchronized void addAuthorizedClientToList(ClientHandler handler) {\r\n        this.handlers.add(handler);\r\n        sendClientsOnline();\r\n    }\r\n\r\n    public AuthorizationService getAuthService() {\r\n        return authService;\r\n    }\r\n\r\n    public HistoryService getHistoryService() {\r\n        return historyService;\r\n    }\r\n\r\n    public void sendClientsOnline() {\r\n        char symbol = 10000;\r\n        StringBuilder sb = new StringBuilder(\"$.list:\" + symbol + \"Send to All\" + symbol);\r\n        for (ClientHandler handler : handlers) {\r\n            sb.append(handler.getCurrentNickUser()).append(symbol);\r\n        }\r\n        System.out.println(sb.toString());\r\n        for (ClientHandler handler : handlers) {\r\n            handler.sendMessage(sb.toString());\r\n        }\r\n    }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/chat_server/src/main/java/chat_server/ChatServer.java b/chat_server/src/main/java/chat_server/ChatServer.java
+--- a/chat_server/src/main/java/chat_server/ChatServer.java	(revision bb181a90592274c21a378ba57477296116320b04)
++++ b/chat_server/src/main/java/chat_server/ChatServer.java	(date 1633080073627)
+@@ -50,7 +50,7 @@
+             while (true) {
+                 System.out.println("Waiting for connection");
+                 Socket socket = serverSocket.accept();
+-                socket.setSoTimeout(240000);
++                socket.setSoTimeout(5000);
+                 System.out.println("Client connected");
+                 new ClientHandler(socket, this).launch();
+             }
+Index: chat_client/src/main/java/chat_client/services/NetworkService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chat_client.services;\r\n\r\nimport java.io.*;\r\nimport java.net.Socket;\r\n\r\npublic class NetworkService {\r\n\r\n    private static final String HOST = \"127.0.0.1\";\r\n    private static final int PORT = 6000;\r\n    private final Socket socket;\r\n    private final BufferedWriter out;\r\n    private final BufferedReader in;\r\n    private final ChatMessageService chatMessageService;\r\n\r\n    public NetworkService(ChatMessageService chatMessageService) throws IOException {\r\n        this.chatMessageService = chatMessageService;\r\n        this.socket = new Socket(HOST, PORT);\r\n        this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));\r\n        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));\r\n    }\r\n\r\n    public void readMessages() {\r\n        Thread read = new Thread(() -> {\r\n            while (!Thread.currentThread().isInterrupted()) {\r\n                try {\r\n                    String message = in.readLine();\r\n                    chatMessageService.receive(message);\r\n                } catch (IOException e) {\r\n                    System.out.println(\"break\");\r\n                    Thread.currentThread().interrupt();\r\n                }\r\n            }\r\n        });\r\n        read.start();\r\n    }\r\n\r\n    public Socket getSocket() {\r\n        return socket;\r\n    }\r\n\r\n    public void sendMessage(String message) {\r\n        try {\r\n            out.write(message + System.lineSeparator());\r\n            out.flush();\r\n        } catch (IOException e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/chat_client/src/main/java/chat_client/services/NetworkService.java b/chat_client/src/main/java/chat_client/services/NetworkService.java
+--- a/chat_client/src/main/java/chat_client/services/NetworkService.java	(revision bb181a90592274c21a378ba57477296116320b04)
++++ b/chat_client/src/main/java/chat_client/services/NetworkService.java	(date 1633079378022)
+@@ -21,7 +21,7 @@
+ 
+     public void readMessages() {
+         Thread read = new Thread(() -> {
+-            while (!Thread.currentThread().isInterrupted()) {
++            while (!Thread.currentThread().isInterrupted() && !socket.isClosed()) {
+                 try {
+                     String message = in.readLine();
+                     chatMessageService.receive(message);
+Index: chat_server/src/main/java/chat_server/services/autorization/DataBaseAuthService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chat_server.services.autorization;\r\n\r\nimport chat_server.errors.LoginIsNotAvailableException;\r\nimport chat_server.errors.NicknameIsNotAvailableException;\r\nimport chat_server.errors.UserNotFoundException;\r\nimport chat_server.errors.WrongCredentialsException;\r\nimport chat_server.services.history.DataBaseHistoryService;\r\n\r\nimport java.sql.*;\r\n\r\npublic class DataBaseAuthService implements AuthorizationService {\r\n    private final Connection connection;\r\n    private PreparedStatement preparedStatement;\r\n    private ResultSet resultSet;\r\n\r\n    public DataBaseAuthService(Connection connection) {\r\n        this.connection = connection;\r\n        start();\r\n    }\r\n\r\n    @Override\r\n    public void start() {\r\n        try {\r\n            Statement statement = connection.createStatement();\r\n            statement.execute(\"create table if not exists users (idUsers int auto_increment primary key, nickname varchar(45) not null unique , login varchar(45) not null unique , password varchar(45) not null);\");\r\n            statement.close();\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void stop() {\r\n        DataBaseHistoryService.close(preparedStatement, resultSet, connection);\r\n    }\r\n\r\n    @Override\r\n    public String getNicknameByLoginAndPassword(String login, String password) {\r\n        try {\r\n            preparedStatement = connection.prepareStatement(\"select nickname from users where login = ? and password = ?\");\r\n            preparedStatement.setString(1, login);\r\n            preparedStatement.setString(2, password);\r\n            resultSet = preparedStatement.executeQuery();\r\n            if (resultSet.next()) {\r\n                return resultSet.getString(\"nickname\");\r\n            } else throw new WrongCredentialsException(\"\");\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n        throw new UserNotFoundException(\"\");\r\n    }\r\n\r\n    @Override\r\n    public boolean changeNickname(String nickname, String password, String newNickname) {\r\n        try {\r\n            preparedStatement = connection.prepareStatement(\"select nickname from users where nickname = ?;\", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);\r\n            preparedStatement.setString(1, newNickname);\r\n            resultSet = preparedStatement.executeQuery();\r\n            if (resultSet.next()) {\r\n                throw new NicknameIsNotAvailableException(\"\");\r\n            }\r\n            preparedStatement = connection.prepareStatement(\"select idUsers,password,nickname from users where nickname = ?;\", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);\r\n            preparedStatement.setString(1, nickname);\r\n            resultSet = preparedStatement.executeQuery();\r\n            while (resultSet.next()) {\r\n                if (resultSet.getString(\"password\").equals(password)) {\r\n                    resultSet.updateString(\"nickname\", newNickname);\r\n                    resultSet.updateRow();\r\n                    return true;\r\n                } else throw new WrongCredentialsException(\"\");\r\n\r\n            }\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n        return false;\r\n    }\r\n\r\n    @Override\r\n    public boolean changePassword(String nickname, String oldPassword, String newPassword) {\r\n        try {\r\n            preparedStatement = connection.prepareStatement(\"select idUsers,password from users where nickname = ?;\", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);\r\n            preparedStatement.setString(1, nickname);\r\n            resultSet = preparedStatement.executeQuery();\r\n            resultSet.next();\r\n            if (resultSet.getString(\"password\").equals(oldPassword)) {\r\n                resultSet.updateString(\"password\", newPassword);\r\n                resultSet.updateRow();\r\n                return true;\r\n            } else throw new WrongCredentialsException(\"\");\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n        return false;\r\n    }\r\n\r\n    @Override\r\n    public void createNewUser(String login, String password, String nickname) {\r\n        try {\r\n            preparedStatement = connection.prepareStatement(\"select login from users where login = ?;\");\r\n            preparedStatement.setString(1, login);\r\n            resultSet = preparedStatement.executeQuery();\r\n            if (resultSet.next()) throw new LoginIsNotAvailableException(\"\");\r\n            preparedStatement = connection.prepareStatement(\"select nickname from users where nickname = ?;\");\r\n            preparedStatement.setString(1, nickname);\r\n            resultSet = preparedStatement.executeQuery();\r\n            if (resultSet.next()) throw new NicknameIsNotAvailableException(\"\");\r\n            preparedStatement = connection.prepareStatement(\"INSERT INTO `online_chat`.`users` (`nickname`, `login`, `password`) VALUES (?, ?, ?);\");\r\n            preparedStatement.setString(1, nickname);\r\n            preparedStatement.setString(2, login);\r\n            preparedStatement.setString(3, password);\r\n            preparedStatement.executeUpdate();\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void deleteUser(String nickname, String password) {\r\n        try {\r\n            preparedStatement = connection.prepareStatement(\"select idUsers,password from users where nickname = ?;\", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);\r\n            preparedStatement.setString(1, nickname);\r\n            resultSet = preparedStatement.executeQuery();\r\n            while (resultSet.next()) {\r\n                if (resultSet.getString(\"password\").equals(password)) {\r\n                    resultSet.deleteRow();\r\n                    return;\r\n                }\r\n            }\r\n            throw new WrongCredentialsException(\"\");\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/chat_server/src/main/java/chat_server/services/autorization/DataBaseAuthService.java b/chat_server/src/main/java/chat_server/services/autorization/DataBaseAuthService.java
+--- a/chat_server/src/main/java/chat_server/services/autorization/DataBaseAuthService.java	(revision bb181a90592274c21a378ba57477296116320b04)
++++ b/chat_server/src/main/java/chat_server/services/autorization/DataBaseAuthService.java	(date 1633014283320)
+@@ -35,19 +35,24 @@
+     }
+ 
+     @Override
+-    public String getNicknameByLoginAndPassword(String login, String password) {
+-        try {
++    public String getNicknameByLoginAndPassword(String login, String password) throws SQLException {
++            preparedStatement = connection.prepareStatement("select nickname from users where login = ?");
++            preparedStatement.setString(1, login);
++            resultSet = preparedStatement.executeQuery();
++            if (!resultSet.next()) throw new UserNotFoundException("");
+             preparedStatement = connection.prepareStatement("select nickname from users where login = ? and password = ?");
+             preparedStatement.setString(1, login);
+             preparedStatement.setString(2, password);
+             resultSet = preparedStatement.executeQuery();
+             if (resultSet.next()) {
++                preparedStatement.close();
++                resultSet.close();
+                 return resultSet.getString("nickname");
+-            } else throw new WrongCredentialsException("");
+-        } catch (SQLException e) {
+-            e.printStackTrace();
+-        }
+-        throw new UserNotFoundException("");
++            } else {
++                preparedStatement.close();
++                resultSet.close();
++                throw new WrongCredentialsException("");
++            }
+     }
+ 
+     @Override
+@@ -68,7 +73,6 @@
+                     resultSet.updateRow();
+                     return true;
+                 } else throw new WrongCredentialsException("");
+-
+             }
+         } catch (SQLException e) {
+             e.printStackTrace();
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+new file mode 100644
+--- /dev/null	(date 1632780110398)
++++ b/.idea/misc.xml	(date 1632780110398)
+@@ -0,0 +1,14 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ExternalStorageConfigurationManager" enabled="true" />
++  <component name="MavenProjectsManager">
++    <option name="originalFiles">
++      <list>
++        <option value="$PROJECT_DIR$/pom.xml" />
++      </list>
++    </option>
++  </component>
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_12" project-jdk-name="12" project-jdk-type="JavaSDK">
++    <output url="file://$PROJECT_DIR$/out" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+new file mode 100644
+--- /dev/null	(date 1632780110367)
++++ b/.idea/modules.xml	(date 1632780110367)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectModuleManager">
++    <modules>
++      <module fileurl="file://$PROJECT_DIR$/OnlineChat_Ver.2.0.iml" filepath="$PROJECT_DIR$/OnlineChat_Ver.2.0.iml" />
++    </modules>
++  </component>
++</project>
+\ No newline at end of file
+Index: OnlineChat_Ver.2.0.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/OnlineChat_Ver.2.0.iml b/OnlineChat_Ver.2.0.iml
+new file mode 100644
+--- /dev/null	(date 1632780298047)
++++ b/OnlineChat_Ver.2.0.iml	(date 1632780298047)
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="JAVA_MODULE" version="4" />
+\ No newline at end of file
+Index: chat_server/src/main/java/chat_server/services/autorization/AuthorizationService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chat_server.services.autorization;\r\n\r\npublic interface AuthorizationService {\r\n    void start();\r\n    void stop();\r\n    String getNicknameByLoginAndPassword(String login, String password);\r\n    boolean changeNickname(String login, String password, String newNickname);\r\n    boolean changePassword(String login, String oldPassword, String newPassword);\r\n    void createNewUser(String login, String password, String nickname);\r\n    void deleteUser(String login, String password);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/chat_server/src/main/java/chat_server/services/autorization/AuthorizationService.java b/chat_server/src/main/java/chat_server/services/autorization/AuthorizationService.java
+--- a/chat_server/src/main/java/chat_server/services/autorization/AuthorizationService.java	(revision bb181a90592274c21a378ba57477296116320b04)
++++ b/chat_server/src/main/java/chat_server/services/autorization/AuthorizationService.java	(date 1633005441177)
+@@ -1,9 +1,11 @@
+ package chat_server.services.autorization;
+ 
++import java.sql.SQLException;
++
+ public interface AuthorizationService {
+     void start();
+     void stop();
+-    String getNicknameByLoginAndPassword(String login, String password);
++    String getNicknameByLoginAndPassword(String login, String password) throws SQLException;
+     boolean changeNickname(String login, String password, String newNickname);
+     boolean changePassword(String login, String oldPassword, String newPassword);
+     void createNewUser(String login, String password, String nickname);
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+new file mode 100644
+--- /dev/null	(date 1632780298067)
++++ b/.idea/vcs.xml	(date 1632780298067)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="$PROJECT_DIR$" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: chat_client/target/classes/chat_main.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/chat_client/target/classes/chat_main.fxml b/chat_client/target/classes/chat_main.fxml
+new file mode 100644
+--- /dev/null	(date 1632744533319)
++++ b/chat_client/target/classes/chat_main.fxml	(date 1632744533319)
+@@ -0,0 +1,100 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<?import javafx.scene.control.*?>
++<?import javafx.scene.layout.*?>
++<?import javafx.geometry.Insets?>
++<AnchorPane xmlns="http://javafx.com/javafx"
++            xmlns:fx="http://javafx.com/fxml"
++            fx:controller="chat_client.ChatController"
++            prefHeight="400.0" prefWidth="600.0">
++
++    <VBox visible="true" fx:id="loginPanel">
++        <HBox VBox.vgrow="ALWAYS">
++            <TextField text="login..." fx:id="loginField" onAction="#sendAuth"/>
++            <PasswordField text="..." fx:id="passwordField" onAction="#sendAuth"/>
++        </HBox>
++        <Button text="Enter" onAction="#sendAuth"/>
++        <Button text="Registration" onAction="#registration"/>
++    </VBox>
++
++    <VBox visible="false" fx:id="changeNicknamePanel">
++        <HBox VBox.vgrow="ALWAYS">
++            <PasswordField text="..." fx:id="enterPassword" onAction="#changeNicknameAuth"/>
++            <TextField text="new nickname..." fx:id="changeNickname" onAction="#changeNicknameAuth"/>
++        </HBox>
++        <Button text="Change Nickname" onAction="#changeNicknameAuth"/>
++        <Button text="Back" onAction="#goBackOnMainChatPanel"/>
++    </VBox>
++
++    <VBox visible="false" fx:id="changePasswordPanel">
++        <HBox VBox.vgrow="ALWAYS">
++            <PasswordField text="..." fx:id="enterOldPassword" onAction="#changePasswordAuth"/>
++            <PasswordField text="..." fx:id="enterNewPassword" onAction="#changePasswordAuth"/>
++        </HBox>
++        <Button text="Change Password" onAction="#changePasswordAuth"/>
++        <Button text="Back" onAction="#goBackOnMainChatPanel"/>
++    </VBox>
++
++    <VBox visible="false" fx:id="registrationPanel">
++        <HBox VBox.vgrow="ALWAYS">
++            <TextField text="login..." fx:id="loginFieldReg" onAction="#registrationAuth"/>
++            <PasswordField text="..." fx:id="passwordFieldReg" onAction="#registrationAuth"/>
++            <TextField text="nick..." fx:id="nickFieldReg" onAction="#registrationAuth"/>
++        </HBox>
++        <Button text="Registration" onAction="#registrationAuth"/>
++        <Button text="Back" onAction="#goBackOnLoginPanel"/>
++    </VBox>
++
++    <VBox visible="false" fx:id="deletePanel">
++        <HBox VBox.vgrow="ALWAYS">
++            <PasswordField text="..." fx:id="passwordFieldForDelete" onAction="#deleteAccountAuth"/>
++        </HBox>
++        <Button text="DELETE" onAction="#deleteAccountAuth"/>
++        <Button text="Back" onAction="#goBackOnMainChatPanel"/>
++    </VBox>
++
++    <VBox fx:id="mainChatPanel" visible="false">
++        <MenuBar>
++            <Menu text="Menu">
++                <MenuItem text="Change Password" onAction="#changePassword"/>
++                <MenuItem text="Change Nick" onAction="#changeNickname"/>
++                <MenuItem text="Delete Account" onAction="#deleteAccount"/>
++                <MenuItem text="View All Message History" onAction="#viewAllMessageHistory"/>
++                <MenuItem text="Clear Message History" onAction="#clearMessageHistory"/>
++                <MenuItem text="Exit" onAction="#exit"/>
++            </Menu>
++        </MenuBar>
++        <HBox VBox.vgrow="ALWAYS">
++            <TextArea fx:id="mainChatArea" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" editable="false">
++                <HBox.margin>
++                    <Insets left="4.0" right="4.0"/>
++                </HBox.margin>
++            </TextArea>
++
++            <ListView fx:id="contactList" prefWidth="130.0">
++                <HBox.margin>
++                    <Insets left="4.0" right="4.0"/>
++                </HBox.margin>
++            </ListView>
++            <padding>
++                <Insets bottom="4.0" top="4.0"/>
++            </padding>
++        </HBox>
++
++        <HBox>
++            <TextField fx:id="inputField" HBox.hgrow="ALWAYS" prefHeight="60.0" onAction="#sendMessage">
++                <HBox.margin>
++                    <Insets left="4.0" right="4.0"/>
++                </HBox.margin>
++            </TextField>
++
++            <Button fx:id="btnSendMessage" text="SEND" prefHeight="60.0" prefWidth="130.0" onAction="#sendMessage">
++                <HBox.margin>
++                    <Insets left="4.0" right="4.0"/>
++                </HBox.margin>
++            </Button>
++            <padding>
++                <Insets bottom="4.0" top="4.0"/>
++            </padding>
++        </HBox>
++    </VBox>
++</AnchorPane>
+\ No newline at end of file
+Index: .idea/dataSources.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dataSources.xml b/.idea/dataSources.xml
+new file mode 100644
+--- /dev/null	(date 1632784746866)
++++ b/.idea/dataSources.xml	(date 1632784746866)
+@@ -0,0 +1,12 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
++    <data-source source="LOCAL" name="online_chat@localhost" uuid="aabf26c3-181b-4a65-b0ec-430e3f6c8dc7">
++      <driver-ref>mysql.8</driver-ref>
++      <synchronize>true</synchronize>
++      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
++      <jdbc-url>jdbc:mysql://localhost:3306/online_chat</jdbc-url>
++      <working-dir>$ProjectFileDir$</working-dir>
++    </data-source>
++  </component>
++</project>
+\ No newline at end of file

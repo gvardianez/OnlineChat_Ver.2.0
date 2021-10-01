@@ -1,0 +1,114 @@
+<changelist name="Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]" date="1633084234341" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 01.10.2021 13:30 [Default Changelist]" />
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_server/target/classes/chat_server/services/autorization/AuthorizationService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/AuthorizationService.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_server/target/classes/chat_server/errors/UserNotFoundException.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/UserNotFoundException.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_server/target/classes/chat_server/ServerApp.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/ServerApp.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_client/target/classes/chat_client/Launch.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/Launch.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_server/target/classes/chat_server/errors/BadRequestException.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/BadRequestException.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_client/target/classes/chat_client/services/NetworkService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/NetworkService.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_client/target/classes/chat_client/services/FileHistoryService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/FileHistoryService.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_server/target/classes/chat_server/errors/NicknameIsNotAvailableException.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/NicknameIsNotAvailableException.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_server/target/classes/chat_server/services/history/HistoryService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/HistoryService.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_server/target/classes/chat_server/ClientHandler.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/ClientHandler.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_server/target/classes/chat_server/services/autorization/DataBaseAuthService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/DataBaseAuthService.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_server/target/classes/chat_server/services/autorization/User.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/User.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_server/target/classes/chat_server/errors/WrongCredentialsException.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/WrongCredentialsException.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_server/target/classes/chat_server/ChatServer.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/ChatServer.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_client/target/classes/chat_client/App.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/App.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_server/target/classes/chat_server/errors/AlreadyAuthorizeException.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/AlreadyAuthorizeException.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_client/target/classes/chat_client/ChatController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/ChatController.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_server/target/classes/chat_server/errors/LoginIsNotAvailableException.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/LoginIsNotAvailableException.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_client/target/classes/chat_client/MessageProcessor.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/MessageProcessor.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_client/target/classes/chat_client/services/ChatMessageService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/ChatMessageService.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_server/target/classes/chat_server/services/autorization/InnerAuthService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/InnerAuthService.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="chat_server/target/classes/chat_server/services/history/DataBaseHistoryService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/DataBaseHistoryService.class" />
+  </binary>
+</changelist>
