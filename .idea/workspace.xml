@@ -4,99 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="431e5e05-b02b-4b96-8460-9acfe90ec604" name="Default Changelist" comment="ДЗ 3, запись истории в файл">
-      <change afterPath="$PROJECT_DIR$/.idea/OnlineChat_Ver.2.0.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_15_0_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_win_15_0_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_15_0_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_win_15_0_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_15_0_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_win_15_0_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_15_0_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_win_15_0_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/AlreadyAuthorizeException.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/App.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/AuthorizationService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/BadRequestException.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/ChatController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/ChatMessageService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/ChatServer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/ClientHandler.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/DataBaseAuthService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/DataBaseHistoryService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/FileHistoryService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/HistoryService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/InnerAuthService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/Launch.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/LoginIsNotAvailableException.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/MessageProcessor.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/NetworkService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/NicknameIsNotAvailableException.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/ServerApp.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/User.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/UserNotFoundException.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/WrongCredentialsException.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/shelved.patch" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30__Default_Changelist_.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/chat_client.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/src/history/history_[w].txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/src/history/history_[wqeqw].txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/src/main/java/chat_client/App.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/src/main/java/chat_client/ChatController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/src/main/java/chat_client/Launch.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/src/main/java/chat_client/MessageProcessor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/src/main/java/chat_client/services/ChatMessageService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/src/main/java/chat_client/services/FileHistoryService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/src/main/java/chat_client/services/NetworkService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/src/main/resources/chat_main.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/target/classes/chat_client/App.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/target/classes/chat_client/ChatController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/target/classes/chat_client/Launch.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/target/classes/chat_client/MessageProcessor.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/target/classes/chat_client/services/ChatMessageService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/target/classes/chat_client/services/FileHistoryService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/target/classes/chat_client/services/NetworkService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_client/target/classes/chat_main.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/chat_server.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/ChatServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/ClientHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/ServerApp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/errors/AlreadyAuthorizeException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/errors/BadRequestException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/errors/LoginIsNotAvailableException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/errors/NicknameIsNotAvailableException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/errors/UserNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/errors/WrongCredentialsException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/services/autorization/AuthorizationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/services/autorization/DataBaseAuthService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/services/autorization/InnerAuthService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/services/autorization/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/services/history/DataBaseHistoryService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/services/history/HistoryService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/ChatServer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/ClientHandler.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/ServerApp.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/errors/AlreadyAuthorizeException.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/errors/BadRequestException.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/errors/LoginIsNotAvailableException.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/errors/NicknameIsNotAvailableException.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/errors/UserNotFoundException.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/errors/WrongCredentialsException.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/services/autorization/AuthorizationService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/services/autorization/DataBaseAuthService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/services/autorization/InnerAuthService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/services/autorization/User.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/services/history/DataBaseHistoryService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/services/history/HistoryService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    <list default="true" id="431e5e05-b02b-4b96-8460-9acfe90ec604" name="Default Changelist" comment="All">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/services/autorization/DataBaseAuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/services/autorization/DataBaseAuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat_server/target/classes/chat_server/ClientHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/ClientHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat_server/target/classes/chat_server/services/autorization/DataBaseAuthService.class" beforeDir="false" afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/services/autorization/DataBaseAuthService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,6 +45,7 @@
     <property name="DatabaseDriversLRU" value="mysql" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../ChatClient" />
@@ -162,17 +78,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Launch" />
@@ -194,7 +99,7 @@
       <workItem from="1632783031946" duration="647000" />
       <workItem from="1632783731565" duration="48548000" />
       <workItem from="1633084980444" duration="69000" />
-      <workItem from="1633085090533" duration="371000" />
+      <workItem from="1633085090533" duration="1240000" />
     </task>
     <task id="LOCAL-00001" summary="V2.0">
       <created>1632780615601</created>
@@ -217,7 +122,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632945840500</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="All">
+      <created>1633085559030</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1633085559030</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -239,6 +151,7 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="V2.0" />
     <MESSAGE value="ДЗ 3, запись истории в файл" />
-    <option name="LAST_COMMIT_MESSAGE" value="ДЗ 3, запись истории в файл" />
+    <MESSAGE value="All" />
+    <option name="LAST_COMMIT_MESSAGE" value="All" />
   </component>
 </project>

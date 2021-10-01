@@ -45,8 +45,6 @@ public class DataBaseAuthService implements AuthorizationService {
             preparedStatement.setString(2, password);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                preparedStatement.close();
-                resultSet.close();
                 return resultSet.getString("nickname");
             } else {
                 preparedStatement.close();

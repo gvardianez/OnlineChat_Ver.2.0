@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.concurrent.ExecutorService;
 
 public class ClientHandler {
     private Socket socket;
@@ -61,6 +60,7 @@ public class ClientHandler {
                         }
                         case ("viewAllHistory:"): {
                             sendMessage(server.getHistoryService().loadMessageHistory(currentNickUser, server.getHistoryService().getValueOfSaveRaw()));
+                            break;
                         }
                         case ("clearAllHistory:"): {
                             if (server.getHistoryService().clearMessageHistory(currentNickUser))
@@ -72,7 +72,6 @@ public class ClientHandler {
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-//                closeConnection("Close");
                 System.out.println("finally");
                 server.removeAuthorizedClientFromList(this);
             }
@@ -111,6 +110,7 @@ public class ClientHandler {
                         sendMessage("ERROR:" + symbol + "User not found!");
                         continue;
                     }catch (SQLException e){
+                        e.printStackTrace();
                         sendMessage("ERROR:" + symbol + "Data Base Problem, try later");
                         continue;
                     }
@@ -130,7 +130,6 @@ public class ClientHandler {
                 break;
             }
             catch (IOException e) {
-//                closeConnection("Server Time Out");
                 e.printStackTrace();
                 break;
             }
