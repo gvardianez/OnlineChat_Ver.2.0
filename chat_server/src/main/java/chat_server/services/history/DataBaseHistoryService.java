@@ -44,7 +44,7 @@ public class DataBaseHistoryService implements HistoryService {
     @Override
     public void saveMessage(String nickUser, String message, String date) {
         int idUser;
-        String messageForSave = "[" + date + "]" + prepareMessage(message);
+        String messageForSave = "[" + date + "]" + message;
         try {
             preparedStatement = connection.prepareStatement("select idUsers from users where nickname = ?;");
             preparedStatement.setString(1, nickUser);
@@ -59,28 +59,6 @@ public class DataBaseHistoryService implements HistoryService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    private String prepareMessage(String message) {
-        StringBuilder messageForSave = new StringBuilder();
-        char splitterOne = 1000;
-        char splitterTwo = 5000;
-        String[] parsingMessage = message.split("" + splitterTwo);
-        String[] nicksRecipients = parsingMessage[0].split("" + splitterOne);
-        if (nicksRecipients.length == 1) {
-            messageForSave.append("(To All): ");
-        } else {
-            messageForSave.append("(To: ");
-            for (int i = 1; i < nicksRecipients.length; i++) {
-                if (i == nicksRecipients.length - 1) {
-                    messageForSave.append(nicksRecipients[i]).append("): ");
-                    continue;
-                }
-                messageForSave.append(nicksRecipients[i]).append(" ,");
-            }
-        }
-        messageForSave.append(parsingMessage[1]);
-        return messageForSave.toString();
     }
 
     @Override

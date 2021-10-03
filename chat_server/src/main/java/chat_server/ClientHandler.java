@@ -69,10 +69,9 @@ public class ClientHandler {
                         }
                     }
                 }
-            }catch (SocketTimeoutException e){
+            } catch (SocketTimeoutException e) {
                 closeConnection("Server Time Out");
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             } finally {
                 System.out.println("finally");
@@ -85,8 +84,7 @@ public class ClientHandler {
     private void processMessage(String currentNickUser, String parseMessageArray) {
         Calendar calendar = Calendar.getInstance();
         String date = dateFormat.format(calendar.getTime());
-        server.getHistoryService().saveMessage(currentNickUser, parseMessageArray, date);
-        server.broadcastMessage(currentNickUser, parseMessageArray, date);
+        server.broadcastMessageAndSave(currentNickUser, parseMessageArray, date);
     }
 
     private void authorize() {
@@ -99,8 +97,8 @@ public class ClientHandler {
                     try {
                         this.currentNickUser = server.getAuthService().getNicknameByLoginAndPassword(parseMessageArray[1], parseMessageArray[2]);
                         checkAlreadyAuthorize();
-                        this.server.addAuthorizedClientToList(this);
                         sendMessage("authok:" + symbol + this.currentNickUser);
+                        this.server.addAuthorizedClientToList(this);
                         sendMessage(server.getHistoryService().loadMessageHistory(currentNickUser, server.getHistoryService().getValueOfLoadRaw()));
                         return;
                     } catch (AlreadyAuthorizeException e) {
@@ -112,7 +110,7 @@ public class ClientHandler {
                     } catch (UserNotFoundException e) {
                         sendMessage("ERROR:" + symbol + "User not found!");
                         continue;
-                    }catch (SQLException e){
+                    } catch (SQLException e) {
                         e.printStackTrace();
                         sendMessage("ERROR:" + symbol + "Data Base Problem, try later");
                         continue;
@@ -128,11 +126,10 @@ public class ClientHandler {
                         sendMessage("ERROR:" + symbol + "Nickname is not available");
                     }
                 }
-            }catch (SocketTimeoutException e){
+            } catch (SocketTimeoutException e) {
                 closeConnection("Server Time Out");
                 break;
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
                 break;
             }
@@ -162,7 +159,7 @@ public class ClientHandler {
             server.getAuthService().changeNickname(currentNickUser, messageArray[1], messageArray[2]);
             System.out.println("changed nickname");
             currentNickUser = messageArray[2];
-            server.sendClientsOnline();
+            server.sendClientsOnline(currentNickUser);
             sendMessage("changeNickOk:" + symbol);
         } catch (NicknameIsNotAvailableException e) {
             sendMessage("ERROR:" + symbol + "Nickname is not available");
@@ -196,7 +193,7 @@ public class ClientHandler {
 
     public void sendMessage(String message) {
         try {
-            out.write(message+System.lineSeparator());
+            out.write(message + System.lineSeparator());
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();

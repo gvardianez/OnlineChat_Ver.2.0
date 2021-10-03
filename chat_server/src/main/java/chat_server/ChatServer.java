@@ -11,16 +11,13 @@ import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 public class ChatServer {
 
-    private static final int PORT = 6000;
+    private static final int PORT = 5000;
     private final AuthorizationService authService;
     private final HistoryService historyService;
     private final List<ClientHandler> handlers;
@@ -50,7 +47,7 @@ public class ChatServer {
             while (true) {
                 System.out.println("Waiting for connection");
                 Socket socket = serverSocket.accept();
-                socket.setSoTimeout(5000);
+                socket.setSoTimeout(240000);
                 System.out.println("Client connected");
                 new ClientHandler(socket, this).launch();
             }
@@ -62,32 +59,50 @@ public class ChatServer {
         }
     }
 
-    public void broadcastMessage(String senderNick, String message, String date) {
+    public void broadcastMessageAndSave(String senderNick, String message, String date) {
+        String messageForSave;
         char splitterOne = 1000;
         char splitterTwo = 5000;
         String[] parsingMessage = message.split("" + splitterTwo);
-        List<String> nicksRecipients = new ArrayList<>(Arrays.asList(parsingMessage[0].split("" + splitterOne)));
-        if (nicksRecipients.size() == 1) {
+        List<String> nicksRecipientsList = new ArrayList<>(Arrays.asList(parsingMessage[0].split("" + splitterOne)));
+        messageForSave = "(From " + senderNick + "): " + parsingMessage[1];
+        nicksRecipientsList.remove("");
+        if (nicksRecipientsList.size() == 0) {
             for (ClientHandler handler : handlers) {
-                handler.sendMessage("[" + date + "]" + " " + senderNick + ": " + parsingMessage[1]);
+                if (!senderNick.equals(handler.getCurrentNickUser())) {
+                    nicksRecipientsList.add(handler.getCurrentNickUser());
+                    historyService.saveMessage(handler.getCurrentNickUser(), messageForSave, date);
+                    handler.sendMessage("[" + date + "] " + senderNick + ": " + parsingMessage[1]);
+                }
             }
-            return;
-        }
-        for (ClientHandler handler : handlers) {
-            if (nicksRecipients.contains(handler.getCurrentNickUser())) {
-                handler.sendMessage("[" + date + "]" + " " + senderNick + ": " + parsingMessage[1]);
+            for (ClientHandler handler : handlers) {
+                if (senderNick.equals(handler.getCurrentNickUser())) {
+                    handler.sendMessage("[" + date + "] Me (To " + nicksRecipientsList + "): " + parsingMessage[1]);
+                }
+            }
+        } else {
+            System.out.println(nicksRecipientsList);
+            for (ClientHandler handler : handlers) {
+                if (!senderNick.equals(handler.getCurrentNickUser()) && nicksRecipientsList.contains(handler.getCurrentNickUser())) {
+                    historyService.saveMessage(handler.getCurrentNickUser(), messageForSave, date);
+                    handler.sendMessage("[" + date + "] " + senderNick + ": " + parsingMessage[1]);
+                } else if (senderNick.equals(handler.getCurrentNickUser()))
+                    handler.sendMessage("[" + date + "] Me (To " + nicksRecipientsList + "): " + parsingMessage[1]);
+
             }
         }
+        messageForSave = "(To " + nicksRecipientsList + "): " + parsingMessage[1];
+        historyService.saveMessage(senderNick, messageForSave, date);
     }
 
     public synchronized void removeAuthorizedClientFromList(ClientHandler handler) {
         this.handlers.remove(handler);
-        sendClientsOnline();
+        sendClientsOnline(handler.getCurrentNickUser());
     }
 
     public synchronized void addAuthorizedClientToList(ClientHandler handler) {
         this.handlers.add(handler);
-        sendClientsOnline();
+        sendClientsOnline(handler.getCurrentNickUser());
     }
 
     public AuthorizationService getAuthService() {
@@ -98,15 +113,15 @@ public class ChatServer {
         return historyService;
     }
 
-    public void sendClientsOnline() {
+    public void sendClientsOnline(String currentNickUser) {
         char symbol = 10000;
-        StringBuilder sb = new StringBuilder("$.list:" + symbol + "Send to All" + symbol);
+        StringBuilder nicksOfCurrentUsers = new StringBuilder("$.list:" + symbol + "Send to All" + symbol);
         for (ClientHandler handler : handlers) {
-            sb.append(handler.getCurrentNickUser()).append(symbol);
+            nicksOfCurrentUsers.append(handler.getCurrentNickUser()).append(symbol);
         }
-        System.out.println(sb.toString());
+        System.out.println(nicksOfCurrentUsers.toString());
         for (ClientHandler handler : handlers) {
-            handler.sendMessage(sb.toString());
+            handler.sendMessage(nicksOfCurrentUsers.toString());
         }
     }
 

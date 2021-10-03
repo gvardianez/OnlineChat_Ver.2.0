@@ -49,8 +49,8 @@ public class ChatController implements Initializable, MessageProcessor {
             }
             case "$.list:": {
                 ObservableList<String> list = FXCollections.observableArrayList(message.substring(8).split("" + symbol));
+                list.remove(nickName);
                 contactList.setItems(list);
-                System.out.println(contactList);
                 MultipleSelectionModel<String> nameModel = contactList.getSelectionModel();
                 nameModel.setSelectionMode(SelectionMode.MULTIPLE);
                 break;
@@ -98,14 +98,13 @@ public class ChatController implements Initializable, MessageProcessor {
     public void sendMessage(ActionEvent actionEvent) {
             char splitterOne = 1000;
             char splitterTwo = 5000;
-            String resultMessage = "sendMessage:" + symbol + this.nickName + splitterOne;
+            String resultMessage = "sendMessage:" + symbol;
             String message = inputField.getText();
             if (message.trim().isEmpty()) return;
             ObservableList<String> selected = contactList.getSelectionModel().getSelectedItems();
             List<String> recipients = new ArrayList<>(selected);
             if (!recipients.contains("Send to All") && recipients.size() != 0) {
                 for (String nick : recipients) {
-                    System.out.println(nick);
                     resultMessage = resultMessage.concat(nick).concat("" + splitterOne);
                 }
             }

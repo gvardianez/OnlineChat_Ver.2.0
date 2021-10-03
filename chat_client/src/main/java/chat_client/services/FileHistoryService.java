@@ -56,7 +56,7 @@ public class FileHistoryService {
         char splitterTwo = 5000;
         String[] parsingMessage = message.split("" + splitterTwo);
         String[] nicksRecipients = parsingMessage[0].split("" + splitterOne);
-        if (nicksRecipients.length == 1) {
+        if (nicksRecipients.length == 0) {
             messageForSave.append("(To All): ");
         } else {
             messageForSave.append("(To: ");
@@ -74,9 +74,6 @@ public class FileHistoryService {
 
     private void checkHistory() {               //проверка не хранится ли сообщений, больше чем задано и заодно обновляем лист сообщений
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-//            RandomAccessFile randomAccessFile = new RandomAccessFile(history, "rw");  //тут не пашет, похоже символ мой разделительный не читает
-//            String[] messages1 = randomAccessFile.readLine().split("" + symbol);
-//            System.out.println(Arrays.toString(messages1));
             allMessages = new ArrayList<>(Arrays.asList(reader.readLine().split("" + symbol)));
             if (allMessages.size() > valueOfSaveMessages) {
                 allMessages.subList(0, allMessages.size() - valueOfSaveMessages).clear();
@@ -85,10 +82,8 @@ public class FileHistoryService {
                 for (String allMessage : allMessages) {
                     message.append(allMessage).append(symbol);
                 }
-//                randomAccessFile.writeChars(message.toString());
                 writer.write(message.toString());
                 writer.close();
-//                randomAccessFile.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -96,30 +91,6 @@ public class FileHistoryService {
     }
 
     public String loadHistory(int valueOfLoadRaw) {
-//        List<String> allMessages = new ArrayList<>();
-//        List<String> saveMessages = new ArrayList<>();
-//        String raw;
-//        try {
-//            BufferedReader reader = new BufferedReader(new FileReader(path));
-//            while ((raw = reader.readLine()) != null) {
-//                allMessages.add(raw);
-//            }
-//            int valueOfRaw = allMessages.size();
-//            if (valueOfRaw > valueOfSaveMessages) {
-//                File tmp = File.createTempFile("tmp", "", new File(pathDirectory));
-//                BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-//               BufferedWriter writer = new BufferedWriter(new FileWriter(tmp));
-//                for (int i = 0; i < valueOfRaw; i++) {
-//                    if (i >= (valueOfRaw - valueOfSaveMessages)) {
-//                        writer.write(allMessages.get(i) + System.lineSeparator());
-//                        saveMessages.add(allMessages.get(i));
-//                    }
-//                }
-//                writer.close();
-//                reader.close();
-//                valueOfRaw = valueOfSaveMessages;
-//                if (history.delete()) tmp.renameTo(history);
-//            } else saveMessages = allMessages;
         checkHistory();
         int valueOfRaw = allMessages.size();
         if (valueOfRaw < valueOfLoadRaw) {

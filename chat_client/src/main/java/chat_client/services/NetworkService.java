@@ -6,7 +6,7 @@ import java.net.Socket;
 public class NetworkService {
 
     private static final String HOST = "127.0.0.1";
-    private static final int PORT = 6000;
+    private static final int PORT = 5000;
     private final Socket socket;
     private final BufferedWriter out;
     private final BufferedReader in;
