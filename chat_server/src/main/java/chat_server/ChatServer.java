@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ChatServer {
 
@@ -21,6 +23,7 @@ public class ChatServer {
     private final AuthorizationService authService;
     private final HistoryService historyService;
     private final List<ClientHandler> handlers;
+    private ExecutorService executorService;
     private Connection dataBaseConnection;
     private final String name = "Alex";
     private final String pass = "1111";
@@ -35,6 +38,11 @@ public class ChatServer {
         this.authService = new DataBaseAuthService(dataBaseConnection);
         this.historyService = new DataBaseHistoryService(dataBaseConnection, 1000, 10);
         this.handlers = new ArrayList<>();
+        executorService = Executors.newCachedThreadPool();
+    }
+
+    public ExecutorService getExecutorService() {
+        return executorService;
     }
 
     public List<ClientHandler> getHandlers() {
@@ -49,7 +57,8 @@ public class ChatServer {
                 Socket socket = serverSocket.accept();
                 socket.setSoTimeout(240000);
                 System.out.println("Client connected");
-                new ClientHandler(socket, this).launch();
+                executorService.execute(new ClientHandler(socket, this)::launch);
+//              new ClientHandler(socket, this).launch();
             }
         } catch (IOException e) {
             e.printStackTrace();
