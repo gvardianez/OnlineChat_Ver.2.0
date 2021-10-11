@@ -32,8 +32,8 @@ public class ClientHandler {
     }
 
     public void launch() {
-        Thread handlerThread = new Thread(() -> {
-            authorize();
+//        server.getExecutorService().execute(() -> {
+        authorize();
             System.out.println("launch");
             try {
                 while (!Thread.currentThread().isInterrupted() && !socket.isClosed()) {
@@ -77,8 +77,7 @@ public class ClientHandler {
                 System.out.println("finally");
                 server.removeAuthorizedClientFromList(this);
             }
-        });
-        handlerThread.start();
+//        });
     }
 
     private void processMessage(String currentNickUser, String parseMessageArray) {
@@ -203,4 +202,5 @@ public class ClientHandler {
     public String getCurrentNickUser() {
         return currentNickUser;
     }
+
 }
