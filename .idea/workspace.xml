@@ -4,14 +4,44 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="431e5e05-b02b-4b96-8460-9acfe90ec604" name="Default Changelist" comment="All">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+    <list default="true" id="431e5e05-b02b-4b96-8460-9acfe90ec604" name="Default Changelist" comment="ThreadAndPools">
+      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/AlreadyAuthorizeException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/App.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/AuthorizationService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/BadRequestException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/ChatController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/ChatMessageService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/ChatServer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/ClientHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/DataBaseAuthService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/DataBaseHistoryService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/FileHistoryService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/HistoryService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/InnerAuthService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/Launch.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/LoginIsNotAvailableException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/MessageProcessor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/NetworkService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/NicknameIsNotAvailableException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/ServerApp.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/UserNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/WrongCredentialsException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30_[Default_Changelist]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2021_13_30__Default_Changelist_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/services/autorization/DataBaseAuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat_server/src/main/java/chat_server/services/autorization/DataBaseAuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat_client/src/history/history_[w].txt" beforeDir="false" afterPath="$PROJECT_DIR$/chat_client/src/history/history_[w].txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat_client/src/history/history_[wqeqw].txt" beforeDir="false" afterPath="$PROJECT_DIR$/chat_client/src/history/history_[wqeqw].txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat_client/src/main/java/HomeWorkThreads.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat_client/src/main/java/chat_client/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat_client/src/main/java/chat_client/ChatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat_client/src/main/java/chat_client/services/FileHistoryService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat_client/target/classes/chat_client/ChatController.class" beforeDir="false" afterPath="$PROJECT_DIR$/chat_client/target/classes/chat_client/ChatController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat_client/target/classes/chat_client/services/FileHistoryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/chat_client/target/classes/chat_client/services/FileHistoryService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat_client/target/classes/chat_client/services/NetworkService.class" beforeDir="false" afterPath="$PROJECT_DIR$/chat_client/target/classes/chat_client/services/NetworkService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat_server/target/classes/chat_server/ChatServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/ChatServer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chat_server/target/classes/chat_server/ClientHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/ClientHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat_server/target/classes/chat_server/services/autorization/DataBaseAuthService.class" beforeDir="false" afterPath="$PROJECT_DIR$/chat_server/target/classes/chat_server/services/autorization/DataBaseAuthService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,13 +51,19 @@
   <component name="ChangesViewManager">
     <option name="groupingKeys">
       <option value="directory" />
-      <option value="module" />
+    </option>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="randomacces" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -48,10 +84,18 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ChatClient" />
+    <property name="extract.method.default.visibility" value="private" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Electronic _voting_system" />
     <property name="restartRequiresConfirmation" value="false" />
   </component>
   <component name="RunManager" selected="Application.Launch">
+    <configuration name="HomeWorkThreads" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="HomeWorkThreads" />
+      <module name="chat_client" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Launch" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="chat_client.Launch" />
       <module name="chat_client" />
@@ -78,10 +122,18 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.HomeWorkThreads" />
+      <item itemvalue="Application.Launch" />
+      <item itemvalue="Application.ServerApp" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Launch" />
         <item itemvalue="Application.ServerApp" />
+        <item itemvalue="Application.Launch" />
+        <item itemvalue="Application.HomeWorkThreads" />
+        <item itemvalue="Application.HomeWorkThreads" />
+        <item itemvalue="Application.Launch" />
       </list>
     </recent_temporary>
   </component>
@@ -100,6 +152,11 @@
       <workItem from="1632783731565" duration="48548000" />
       <workItem from="1633084980444" duration="69000" />
       <workItem from="1633085090533" duration="1240000" />
+      <workItem from="1633086436406" duration="24348000" />
+      <workItem from="1633255628785" duration="50064000" />
+      <workItem from="1633457621158" duration="1105000" />
+      <workItem from="1633512585608" duration="721000" />
+      <workItem from="1633693775987" duration="4855000" />
     </task>
     <task id="LOCAL-00001" summary="V2.0">
       <created>1632780615601</created>
@@ -129,7 +186,35 @@
       <option name="project" value="LOCAL" />
       <updated>1633085559030</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="All">
+      <created>1633086456824</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1633086456824</updated>
+    </task>
+    <task id="LOCAL-00006" summary="All">
+      <created>1633086630304</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1633086630304</updated>
+    </task>
+    <task id="LOCAL-00007" summary="All">
+      <created>1633270677876</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1633270677876</updated>
+    </task>
+    <task id="LOCAL-00008" summary="ThreadAndPools">
+      <created>1633370438041</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1633370438041</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -152,6 +237,18 @@
     <MESSAGE value="V2.0" />
     <MESSAGE value="ДЗ 3, запись истории в файл" />
     <MESSAGE value="All" />
-    <option name="LAST_COMMIT_MESSAGE" value="All" />
+    <MESSAGE value="ThreadAndPools" />
+    <option name="LAST_COMMIT_MESSAGE" value="ThreadAndPools" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../../Java_3_lessons/src/main/java/lesson_4_locks_pools/HomeWorkThreads.java</url>
+          <line>168</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

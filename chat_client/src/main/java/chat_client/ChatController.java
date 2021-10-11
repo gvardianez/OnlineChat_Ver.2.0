@@ -1,7 +1,6 @@
 package chat_client;
 
 import chat_client.services.ChatMessageService;
-import chat_client.services.FileHistoryService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +25,6 @@ public class ChatController implements Initializable, MessageProcessor {
     public Button btnSendMessage;
     public PasswordField passwordField, passwordFieldReg, enterPassword, enterOldPassword, enterNewPassword, passwordFieldForDelete;
     private ChatMessageService chatMessageService;
-    private FileHistoryService historyService;
     private String nickName;
     private final char symbol = 10000;
 
@@ -37,10 +35,8 @@ public class ChatController implements Initializable, MessageProcessor {
         switch (parseMessage) {
             case "authok:": {
                 this.nickName = parseMessageArray[1];
-                historyService = new FileHistoryService(nickName, "chat_client/src/history", 10);
                 loginPanel.setVisible(false);
                 mainChatPanel.setVisible(true);
-                mainChatArea.appendText(historyService.loadHistory(5) + System.lineSeparator());
                 break;
             }
             case "ERROR:": {
@@ -109,8 +105,6 @@ public class ChatController implements Initializable, MessageProcessor {
                 }
             }
             chatMessageService.send(resultMessage + splitterTwo + message);
-            String[] array = (resultMessage + splitterTwo + message).split("" + symbol);
-            historyService.saveMessageAsLine(array[1]);
         inputField.clear();
     }
 
