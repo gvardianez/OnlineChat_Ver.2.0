@@ -1,0 +1,37 @@
+DEBUG 2021-10-11 21:57:10 (ChatServer.java:57) - Server Start
+DEBUG 2021-10-11 21:57:10 (ChatServer.java:59) - Waiting for connection
+DEBUG 2021-10-11 21:58:45 (ChatServer.java:57) - Server Start
+DEBUG 2021-10-11 21:58:45 (ChatServer.java:59) - Waiting for connection
+DEBUG 2021-10-11 21:59:39 (ChatServer.java:62) - Client connected
+DEBUG 2021-10-11 21:59:39 (ChatServer.java:59) - Waiting for connection
+DEBUG 2021-10-11 21:59:39 (ChatServer.java:118) - Client enter: w
+INFO  2021-10-11 21:59:39 (ChatServer.java:136) - List of members in chat $.list:✐Send to All✐w✐
+DEBUG 2021-10-11 21:59:39 (ClientHandler.java:41) - Auth ok
+TRACE 2021-10-11 22:00:33 (ClientHandler.java:47) - Input command from client sendMessage:: 
+INFO  2021-10-11 22:00:33 (ChatServer.java:105) - Nicks of recipients: []
+DEBUG 2021-10-11 22:05:11 (ChatServer.java:57) - Server Start
+DEBUG 2021-10-11 22:05:11 (ChatServer.java:59) - Waiting for connection
+DEBUG 2021-10-11 22:05:30 (ChatServer.java:62) - Client connected
+DEBUG 2021-10-11 22:05:30 (ChatServer.java:59) - Waiting for connection
+DEBUG 2021-10-11 22:05:30 (ChatServer.java:118) - Client enter: w
+INFO  2021-10-11 22:05:30 (ChatServer.java:136) - List of members in chat $.list:✐Send to All✐w✐
+DEBUG 2021-10-11 22:05:30 (ClientHandler.java:41) - Auth ok
+TRACE 2021-10-11 22:06:35 (ClientHandler.java:47) - Input command from client sendMessage:: 
+INFO  2021-10-11 22:06:35 (ChatServer.java:105) - Nicks of recipients: []
+ERROR 2021-10-11 22:06:51 (ClientHandler.java:80) - Throwing
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:186) ~[?:?]
+	at java.net.SocketInputStream.read(SocketInputStream.java:140) ~[?:?]
+	at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284) ~[?:?]
+	at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326) ~[?:?]
+	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178) ~[?:?]
+	at java.io.InputStreamReader.read(InputStreamReader.java:185) ~[?:?]
+	at java.io.BufferedReader.fill(BufferedReader.java:161) ~[?:?]
+	at java.io.BufferedReader.readLine(BufferedReader.java:326) ~[?:?]
+	at java.io.BufferedReader.readLine(BufferedReader.java:392) ~[?:?]
+	at chat_server.ClientHandler.launch(ClientHandler.java:45) ~[classes/:?]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128) [?:?]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628) [?:?]
+	at java.lang.Thread.run(Thread.java:835) [?:?]
+DEBUG 2021-10-11 22:06:51 (ChatServer.java:112) - Client exit: w
+INFO  2021-10-11 22:06:51 (ChatServer.java:136) - List of members in chat $.list:✐Send to All✐

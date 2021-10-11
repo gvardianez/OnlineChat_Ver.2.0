@@ -71,7 +71,6 @@ public class DataBaseHistoryService implements HistoryService {
             resultSet = preparedStatement.executeQuery();
             resultSet.last();
             int valueOfRaw = resultSet.getRow();
-            System.out.println(resultSet.getRow());
             valueForDeleteRaw = valueOfRaw - valueOfSaveRaw;
             if (valueForDeleteRaw > 0) {
                 resultSet.first();
