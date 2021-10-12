@@ -2,13 +2,14 @@ package for_hw_6;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HomeWork6 {
 
     public static void main(String[] args) {
+        Integer[] integers = new Integer[]{1, 1, 1, 4, 4, 4, 2};
+        System.out.println(checkArrayOneAndFourOnly(integers));
     }
 
     public static Integer[] arrayAfterLastFour(Integer[] array) {
@@ -36,7 +37,7 @@ public class HomeWork6 {
 //        throw new RuntimeException();
     }
 
-    public static boolean checkArray(Integer[] array) {
+    public static boolean checkArrayOneOrFour(Integer[] array) {
 //        for (Integer integer : array) {
 //            if (integer == 1 || integer == 4) {
 //                return true;
@@ -47,5 +48,8 @@ public class HomeWork6 {
         return Arrays.asList(array).contains(1) || Arrays.asList(array).contains(4);
     }
 
+    public static boolean checkArrayOneAndFourOnly(Integer[] array) {
+        return (Arrays.stream(array).allMatch((s) -> s == 1 || s == 4) && Arrays.asList(array).contains(1) && Arrays.asList(array).contains(4));
+    }
 
 }

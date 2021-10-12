@@ -21,7 +21,7 @@ class HomeWork6Test {
         return list.stream();
     }
 
-    private static Stream<Arguments> dataCheckArray() {
+    private static Stream<Arguments> dataCheckArrayOneOrFour() {
         List<Arguments> list = new ArrayList<>();
         list.add(Arguments.arguments(new Integer[]{-1, 3, 500, 2, 0, 2}, false));
         list.add(Arguments.arguments(new Integer[]{1, 5, 1, 2, 4, 2, 44, 1, 1}, true));
@@ -31,10 +31,20 @@ class HomeWork6Test {
         return list.stream();
     }
 
+    private static Stream<Arguments> dataCheckArrayOneAndFourOnly() {
+        List<Arguments> list = new ArrayList<>();
+        list.add(Arguments.arguments(new Integer[]{-1, 3, 500, 2, 0, 2}, false));
+        list.add(Arguments.arguments(new Integer[]{1, 5, 1, 2, 4, 2, 44, 1, 1}, false));
+        list.add(Arguments.arguments(new Integer[]{}, false));
+        list.add(Arguments.arguments(new Integer[]{1,4}, true));
+        list.add(Arguments.arguments(new Integer[]{1,1,4,1,4,1,4},true));
+        return list.stream();
+    }
+
     @ParameterizedTest
-    @MethodSource("dataCheckArray")
+    @MethodSource("dataCheckArrayOneOrFour")
     void checkArrayTest(Integer[] array, boolean result) {
-        Assertions.assertEquals(HomeWork6.checkArray(array), result);
+        Assertions.assertEquals(HomeWork6.checkArrayOneOrFour(array), result);
     }
 
     @ParameterizedTest()
@@ -45,5 +55,9 @@ class HomeWork6Test {
         Assertions.assertThrows(RuntimeException.class, () -> HomeWork6.arrayAfterLastFour(new Integer[]{0, 5, 445, 454, 1, 2, 45, 8, 5}));
     }
 
-
+    @ParameterizedTest()
+    @MethodSource("dataCheckArrayOneAndFourOnly")
+    void checkArrayOneAndFourOnly(Integer[] array, boolean result) {
+        Assertions.assertEquals(HomeWork6.checkArrayOneAndFourOnly(array), result);
+    }
 }
