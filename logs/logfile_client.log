@@ -1,0 +1,16 @@
+INFO  2021-10-11 22:05:30 (ChatController.java:129) - Client sendAuth
+DEBUG 2021-10-11 22:05:30 (ChatController.java:37) - Answer from serve authok:
+DEBUG 2021-10-11 22:05:30 (ChatController.java:37) - Answer from serve $.list:
+DEBUG 2021-10-11 22:05:30 (ChatController.java:37) - Answer from serve [03/10/21 17:06:24](From 1212): sdfsd
+DEBUG 2021-10-11 22:05:30 (ChatController.java:37) - Answer from serve [03/10/21 17:45:41](To []): fsdfsd
+DEBUG 2021-10-11 22:05:30 (ChatController.java:37) - Answer from serve [03/10/21 17:48:32](To [wqeqw]): fsdfsd
+DEBUG 2021-10-11 22:05:30 (ChatController.java:37) - Answer from serve [03/10/21 17:48:49](To [wqeqw]): bvbcvb
+DEBUG 2021-10-11 22:05:30 (ChatController.java:37) - Answer from serve [03/10/21 17:54:21](To []): fsdfsdfsd
+DEBUG 2021-10-11 22:05:30 (ChatController.java:37) - Answer from serve [03/10/21 18:31:36](From wqeqw): sdfsdf
+DEBUG 2021-10-11 22:05:30 (ChatController.java:37) - Answer from serve [11/10/21 16:45:48](To []): rewrwer
+DEBUG 2021-10-11 22:05:30 (ChatController.java:37) - Answer from serve [11/10/21 16:45:55](To []): 342343
+DEBUG 2021-10-11 22:05:30 (ChatController.java:37) - Answer from serve [11/10/21 17:05:49](To []): dsfsdf
+DEBUG 2021-10-11 22:05:30 (ChatController.java:37) - Answer from serve [11/10/21 22:00:33](To []): sdfdsfsf
+DEBUG 2021-10-11 22:05:30 (ChatController.java:37) - Answer from serve 
+INFO  2021-10-11 22:06:35 (ChatController.java:111) - Client w send message
+DEBUG 2021-10-11 22:06:35 (ChatController.java:37) - Answer from serve [11/10/21 22:06:35] Me (To []): sdfsdfs

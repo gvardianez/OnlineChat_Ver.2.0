@@ -1,6 +1,9 @@
 package chat_server;
 
 import chat_server.errors.*;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
@@ -11,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class ClientHandler {
+    private static final Logger logger = LogManager.getLogger("serverLogs");
     private Socket socket;
     private BufferedWriter out;
     private BufferedReader in;
@@ -34,49 +38,51 @@ public class ClientHandler {
     public void launch() {
 //        server.getExecutorService().execute(() -> {
         authorize();
-            System.out.println("launch");
-            try {
-                while (!Thread.currentThread().isInterrupted() && !socket.isClosed()) {
-                    socket.setSoTimeout(1000 * 60 * 30);
-                    String message = in.readLine();
-                    String[] parseMessageArray = message.split("" + symbol);
-                    System.out.println(parseMessageArray[0]);
-                    switch (parseMessageArray[0]) {
-                        case ("changePass:"): {
-                            changePassword(parseMessageArray);
-                            break;
-                        }
-                        case ("changeNick:"): {
-                            changeNick(parseMessageArray);
-                            break;
-                        }
-                        case ("del:"): {
-                            deleteAccount(parseMessageArray[1]);
-                            break;
-                        }
-                        case ("sendMessage:"): {
-                            processMessage(currentNickUser, parseMessageArray[1]);
-                            break;
-                        }
-                        case ("viewAllHistory:"): {
-                            sendMessage(server.getHistoryService().loadMessageHistory(currentNickUser, server.getHistoryService().getValueOfSaveRaw()));
-                            break;
-                        }
-                        case ("clearAllHistory:"): {
-                            if (server.getHistoryService().clearMessageHistory(currentNickUser))
-                                sendMessage("Message History Clear");
-                            break;
-                        }
+        logger.debug("Auth ok");
+        try {
+            while (!Thread.currentThread().isInterrupted() && !socket.isClosed()) {
+                socket.setSoTimeout(1000 * 60 * 30);
+                String message = in.readLine();
+                String[] parseMessageArray = message.split("" + symbol);
+                logger.trace("Input command from client {}: ", parseMessageArray[0]);
+                switch (parseMessageArray[0]) {
+                    case ("changePass:"): {
+                        changePassword(parseMessageArray);
+                        break;
+                    }
+                    case ("changeNick:"): {
+                        changeNick(parseMessageArray);
+                        break;
+                    }
+                    case ("del:"): {
+                        deleteAccount(parseMessageArray[1]);
+                        break;
+                    }
+                    case ("sendMessage:"): {
+                        processMessage(currentNickUser, parseMessageArray[1]);
+                        break;
+                    }
+                    case ("viewAllHistory:"): {
+                        sendMessage(server.getHistoryService().loadMessageHistory(currentNickUser, server.getHistoryService().getValueOfSaveRaw()));
+                        break;
+                    }
+                    case ("clearAllHistory:"): {
+                        if (server.getHistoryService().clearMessageHistory(currentNickUser))
+                            sendMessage("Message History Clear");
+                        break;
                     }
                 }
-            } catch (SocketTimeoutException e) {
-                closeConnection("Server Time Out");
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                System.out.println("finally");
-                server.removeAuthorizedClientFromList(this);
             }
+        } catch (SocketTimeoutException e) {
+            logger.throwing(Level.ERROR, e);
+            closeConnection("Server Time Out");
+        } catch (IOException e) {
+            logger.throwing(Level.ERROR, e);
+            e.printStackTrace();
+        } finally {
+            System.out.println("finally");
+            server.removeAuthorizedClientFromList(this);
+        }
 //        });
     }
 
@@ -101,15 +107,19 @@ public class ClientHandler {
                         sendMessage(server.getHistoryService().loadMessageHistory(currentNickUser, server.getHistoryService().getValueOfLoadRaw()));
                         return;
                     } catch (AlreadyAuthorizeException e) {
+                        logger.throwing(Level.ERROR, e);
                         sendMessage("ERROR:" + symbol + "You are already is authorized");
                         continue;
                     } catch (WrongCredentialsException e) {
+                        logger.throwing(Level.ERROR, e);
                         sendMessage("ERROR:" + symbol + "Wrong credentials");
                         continue;
                     } catch (UserNotFoundException e) {
+                        logger.throwing(Level.ERROR, e);
                         sendMessage("ERROR:" + symbol + "User not found!");
                         continue;
                     } catch (SQLException e) {
+                        logger.throwing(Level.ERROR, e);
                         e.printStackTrace();
                         sendMessage("ERROR:" + symbol + "Data Base Problem, try later");
                         continue;
@@ -119,16 +129,21 @@ public class ClientHandler {
                     try {
                         server.getAuthService().createNewUser(parseMessageArray[1], parseMessageArray[2], parseMessageArray[3]);
                         sendMessage("regok:" + symbol);
+                        logger.info("New registration {}", parseMessageArray[1]);
                     } catch (LoginIsNotAvailableException e) {
+                        logger.throwing(Level.ERROR, e);
                         sendMessage("ERROR:" + symbol + "Login is not available");
                     } catch (NicknameIsNotAvailableException e) {
+                        logger.throwing(Level.ERROR, e);
                         sendMessage("ERROR:" + symbol + "Nickname is not available");
                     }
                 }
             } catch (SocketTimeoutException e) {
+                logger.throwing(Level.ERROR, e);
                 closeConnection("Server Time Out");
                 break;
             } catch (IOException e) {
+                logger.throwing(Level.ERROR, e);
                 e.printStackTrace();
                 break;
             }
@@ -156,13 +171,15 @@ public class ClientHandler {
     private void changeNick(String[] messageArray) {
         try {
             server.getAuthService().changeNickname(currentNickUser, messageArray[1], messageArray[2]);
-            System.out.println("changed nickname");
             currentNickUser = messageArray[2];
-            server.sendClientsOnline(currentNickUser);
+            server.sendClientsOnline();
             sendMessage("changeNickOk:" + symbol);
+            logger.info("User {} change nick to {}", currentNickUser, messageArray[2]);
         } catch (NicknameIsNotAvailableException e) {
+            logger.throwing(Level.ERROR, e);
             sendMessage("ERROR:" + symbol + "Nickname is not available");
         } catch (WrongCredentialsException e) {
+            logger.throwing(Level.ERROR, e);
             sendMessage("ERROR:" + symbol + "Wrong credentials");
         }
     }
@@ -170,11 +187,13 @@ public class ClientHandler {
     private void changePassword(String[] messageArray) {
         try {
             server.getAuthService().changePassword(currentNickUser, messageArray[1], messageArray[2]);
-            System.out.println("changed password");
             sendMessage("changePasswordOk:" + symbol);
+            logger.info("User {} change password", currentNickUser);
         } catch (WrongCredentialsException e) {
+            logger.throwing(Level.ERROR, e);
             sendMessage("ERROR:" + symbol + "Wrong credentials");
         } catch (UserNotFoundException e) {
+            logger.throwing(Level.ERROR, e);
             sendMessage("ERROR:" + symbol + "User not found!");
         }
     }
@@ -182,10 +201,11 @@ public class ClientHandler {
     private void deleteAccount(String password) {
         try {
             server.getAuthService().deleteUser(currentNickUser, password);
-            System.out.println("delete user ok");
             sendMessage("deleteAccountOk:" + symbol);
+            logger.info("User {} delete account", currentNickUser);
             closeConnection("Account Delete Successfully");
         } catch (WrongCredentialsException e) {
+            logger.throwing(Level.ERROR, e);
             sendMessage("ERROR:" + symbol + "Wrong credentials");
         }
     }

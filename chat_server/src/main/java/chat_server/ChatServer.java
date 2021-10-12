@@ -4,6 +4,9 @@ import chat_server.services.autorization.AuthorizationService;
 import chat_server.services.autorization.DataBaseAuthService;
 import chat_server.services.history.DataBaseHistoryService;
 import chat_server.services.history.HistoryService;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -18,7 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ChatServer {
-
+    private static final Logger logger = LogManager.getLogger("serverLogs");
     private static final int PORT = 5000;
     private final AuthorizationService authService;
     private final HistoryService historyService;
@@ -27,7 +30,7 @@ public class ChatServer {
     private Connection dataBaseConnection;
     private final String name = "Alex";
     private final String pass = "1111";
-    private final String connectionURL = "jdbc:mysql://localhost:3306/online_chat";
+    private final String connectionURL = "jdbc:mysql://localhost:3306/online_chat?useUnicode=true&serverTimezone=UTC";
 
     public ChatServer() {
         try {
@@ -51,16 +54,17 @@ public class ChatServer {
 
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-            System.out.println("Server start");
+            logger.debug("Server Start");
             while (true) {
-                System.out.println("Waiting for connection");
+                logger.debug("Waiting for connection");
                 Socket socket = serverSocket.accept();
                 socket.setSoTimeout(240000);
-                System.out.println("Client connected");
+                logger.debug("Client connected");
                 executorService.execute(new ClientHandler(socket, this)::launch);
 //              new ClientHandler(socket, this).launch();
             }
         } catch (IOException e) {
+            logger.throwing(Level.ERROR, e);
             e.printStackTrace();
         } finally {
             authService.stop();
@@ -90,28 +94,29 @@ public class ChatServer {
                 }
             }
         } else {
-            System.out.println(nicksRecipientsList);
             for (ClientHandler handler : handlers) {
                 if (!senderNick.equals(handler.getCurrentNickUser()) && nicksRecipientsList.contains(handler.getCurrentNickUser())) {
                     historyService.saveMessage(handler.getCurrentNickUser(), messageForSave, date);
                     handler.sendMessage("[" + date + "] " + senderNick + ": " + parsingMessage[1]);
                 } else if (senderNick.equals(handler.getCurrentNickUser()))
                     handler.sendMessage("[" + date + "] Me (To " + nicksRecipientsList + "): " + parsingMessage[1]);
-
             }
         }
+        logger.info("Nicks of recipients: {}", nicksRecipientsList);
         messageForSave = "(To " + nicksRecipientsList + "): " + parsingMessage[1];
         historyService.saveMessage(senderNick, messageForSave, date);
     }
 
     public synchronized void removeAuthorizedClientFromList(ClientHandler handler) {
         this.handlers.remove(handler);
-        sendClientsOnline(handler.getCurrentNickUser());
+        logger.debug("Client exit: {}", handler.getCurrentNickUser());
+        sendClientsOnline();
     }
 
     public synchronized void addAuthorizedClientToList(ClientHandler handler) {
         this.handlers.add(handler);
-        sendClientsOnline(handler.getCurrentNickUser());
+        logger.debug("Client enter: {}", handler.getCurrentNickUser());
+        sendClientsOnline();
     }
 
     public AuthorizationService getAuthService() {
@@ -122,13 +127,13 @@ public class ChatServer {
         return historyService;
     }
 
-    public void sendClientsOnline(String currentNickUser) {
+    public void sendClientsOnline() {
         char symbol = 10000;
         StringBuilder nicksOfCurrentUsers = new StringBuilder("$.list:" + symbol + "Send to All" + symbol);
         for (ClientHandler handler : handlers) {
             nicksOfCurrentUsers.append(handler.getCurrentNickUser()).append(symbol);
         }
-        System.out.println(nicksOfCurrentUsers.toString());
+        logger.info("List of members in chat {}", nicksOfCurrentUsers.toString());
         for (ClientHandler handler : handlers) {
             handler.sendMessage(nicksOfCurrentUsers.toString());
         }

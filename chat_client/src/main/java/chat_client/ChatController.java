@@ -1,7 +1,6 @@
 package chat_client;
 
 import chat_client.services.ChatMessageService;
-import chat_client.services.FileHistoryService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,6 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +20,7 @@ import java.util.*;
 
 public class ChatController implements Initializable, MessageProcessor {
 
+    private static final Logger logger = LogManager.getLogger("clientLogs");
     public VBox mainChatPanel, loginPanel, registrationPanel, changeNicknamePanel, changePasswordPanel, deletePanel;
     public TextArea mainChatArea;
     public ListView<String> contactList;
@@ -26,21 +28,18 @@ public class ChatController implements Initializable, MessageProcessor {
     public Button btnSendMessage;
     public PasswordField passwordField, passwordFieldReg, enterPassword, enterOldPassword, enterNewPassword, passwordFieldForDelete;
     private ChatMessageService chatMessageService;
-    private FileHistoryService historyService;
     private String nickName;
     private final char symbol = 10000;
 
     private void parseMessage(String message) {
         String[] parseMessageArray = message.split("" + symbol);
         String parseMessage = parseMessageArray[0];
-        System.out.println(parseMessage);
+        logger.debug("Answer from server {}", parseMessage);
         switch (parseMessage) {
             case "authok:": {
                 this.nickName = parseMessageArray[1];
-                historyService = new FileHistoryService(nickName, "chat_client/src/history", 10);
                 loginPanel.setVisible(false);
                 mainChatPanel.setVisible(true);
-                mainChatArea.appendText(historyService.loadHistory(5) + System.lineSeparator());
                 break;
             }
             case "ERROR:": {
@@ -96,21 +95,20 @@ public class ChatController implements Initializable, MessageProcessor {
     }
 
     public void sendMessage(ActionEvent actionEvent) {
-            char splitterOne = 1000;
-            char splitterTwo = 5000;
-            String resultMessage = "sendMessage:" + symbol;
-            String message = inputField.getText();
-            if (message.trim().isEmpty()) return;
-            ObservableList<String> selected = contactList.getSelectionModel().getSelectedItems();
-            List<String> recipients = new ArrayList<>(selected);
-            if (!recipients.contains("Send to All") && recipients.size() != 0) {
-                for (String nick : recipients) {
-                    resultMessage = resultMessage.concat(nick).concat("" + splitterOne);
-                }
+        char splitterOne = 1000;
+        char splitterTwo = 5000;
+        String resultMessage = "sendMessage:" + symbol;
+        String message = inputField.getText();
+        if (message.trim().isEmpty()) return;
+        ObservableList<String> selected = contactList.getSelectionModel().getSelectedItems();
+        List<String> recipients = new ArrayList<>(selected);
+        if (!recipients.contains("Send to All") && recipients.size() != 0) {
+            for (String nick : recipients) {
+                resultMessage = resultMessage.concat(nick).concat("" + splitterOne);
             }
-            chatMessageService.send(resultMessage + splitterTwo + message);
-            String[] array = (resultMessage + splitterTwo + message).split("" + symbol);
-            historyService.saveMessageAsLine(array[1]);
+        }
+        chatMessageService.send(resultMessage + splitterTwo + message);
+        logger.info("Client {} send message",nickName);
         inputField.clear();
     }
 
@@ -128,6 +126,7 @@ public class ChatController implements Initializable, MessageProcessor {
 
     public void sendAuth(ActionEvent actionEvent) {
         if (loginField.getText().isBlank() || passwordField.getText().isBlank()) return;
+        logger.info("Client sendAuth");
         chatMessageService.connect();
         chatMessageService.send("auth:" + symbol + loginField.getText() + symbol + passwordField.getText());
     }
@@ -135,6 +134,7 @@ public class ChatController implements Initializable, MessageProcessor {
     public void registration(ActionEvent actionEvent) {
         registrationPanel.setVisible(true);
         loginPanel.setVisible(false);
+        logger.info("Client try registration");
     }
 
     @Override
